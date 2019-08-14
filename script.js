@@ -1,210 +1,126 @@
-function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}class Application extends React.Component {
-  constructor(props) {
-    super(props);_defineProperty(this, "handleClick",
+class Calculator {
+  constructor(previousOperandTextElement, currentOperandTextElement) {
+    this.previousOperandTextElement = previousOperandTextElement
+    this.currentOperandTextElement = currentOperandTextElement
+    this.clear()
+  }
+
+  clear() {
+    this.currentOperand = ''
+    this.previousOperand = ''
+    this.operation = undefined
+  }
+
+  delete() {
+    this.currentOperand = this.currentOperand.toString().slice(0, -1)
+  }
+
+  appendNumber(number) {
+    if (number === '.' && this.currentOperand.includes('.')) return
+    this.currentOperand = this.currentOperand.toString() + number.toString()
+  }
+
+  chooseOperation(operation) {
+    if (this.currentOperand === '') return
+    if (this.previousOperand !== '') {
+      this.compute()
+    }
+    this.operation = operation
+    this.previousOperand = this.currentOperand
+    this.currentOperand = ''
+  }
+
+  compute() {
+    let computation
+    const prev = parseFloat(this.previousOperand)
+    const current = parseFloat(this.currentOperand)
+    if (isNaN(prev) || isNaN(current)) return
+    switch (this.operation) {
+      case '+':
+        computation = prev + current
+        break
+      case '-':
+        computation = prev - current
+        break
+      case '*':
+        computation = prev * current
+        break
+      case '÷':
+        computation = prev / current
+        break
+      default:
+        return
+    }
+    this.currentOperand = computation
+    this.operation = undefined
+    this.previousOperand = ''
+  }
+
+  getDisplayNumber(number) {
+    const stringNumber = number.toString()
+    const integerDigits = parseFloat(stringNumber.split('.')[0])
+    const decimalDigits = stringNumber.split('.')[1]
+    let integerDisplay
+    if (isNaN(integerDigits)) {
+      integerDisplay = ''
+    } else {
+      integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
+    }
+    if (decimalDigits != null) {
+      return `${integerDisplay}.${decimalDigits}`
+    } else {
+      return integerDisplay
+    }
+  }
+
+  updateDisplay() {
+    this.currentOperandTextElement.innerText =
+      this.getDisplayNumber(this.currentOperand)
+    if (this.operation != null) {
+      this.previousOperandTextElement.innerText =
+        `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
+    } else {
+      this.previousOperandTextElement.innerText = ''
+    }
+  }
+}
 
 
+const numberButtons = document.querySelectorAll('[data-number]')
+const operationButtons = document.querySelectorAll('[data-operation]')
+const equalsButton = document.querySelector('[data-equals]')
+const deleteButton = document.querySelector('[data-delete]')
+const allClearButton = document.querySelector('[data-all-clear]')
+const previousOperandTextElement = document.querySelector('[data-previous-operand]')
+const currentOperandTextElement = document.querySelector('[data-current-operand]')
 
+const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
 
+numberButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    calculator.appendNumber(button.innerText)
+    calculator.updateDisplay()
+  })
+})
 
+operationButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    calculator.chooseOperation(button.innerText)
+    calculator.updateDisplay()
+  })
+})
 
+equalsButton.addEventListener('click', button => {
+  calculator.compute()
+  calculator.updateDisplay()
+})
 
-    buttonName => {
-      let currentNumber = this.state.currentNumber;
-      let operatorFlag = this.state.operatorFlag;
-      switch (true) {
-        case buttonName === "0" ||
-        buttonName === "1" ||
-        buttonName === "2" ||
-        buttonName === "3" ||
-        buttonName === "4" ||
-        buttonName === "5" ||
-        buttonName === "6" ||
-        buttonName === "7" ||
-        buttonName === "8" ||
-        buttonName === "9":
-          if (this.state.currentNumber !== "0") {
-            currentNumber += buttonName;
-            operatorFlag = false;
-          } else {
-            currentNumber = buttonName;
-          }
-          break;
-        case buttonName === "+" ||
-        buttonName === "-" ||
-        buttonName === "*" ||
-        buttonName === "/":
-          if (!this.state.operatorFlag) {
-            currentNumber += buttonName;
-            operatorFlag = true;
-            this.setState({ decimalFlag: false });
-          } else {
-            const newNumber = currentNumber.slice(0, currentNumber.length - 1);
-            currentNumber = newNumber;
-            currentNumber += buttonName;
-          }
-          break;
-        case buttonName === "C":
-          currentNumber = "0";
-          operatorFlag = false;
-          this.setState({ decimalFlag: false });
-          break;
-        case buttonName === "=":
-          currentNumber = eval(currentNumber);
-          operatorFlag = false;
-          this.setState({ decimalFlag: true });
-          break;
-        case buttonName === ".":
-          if (!this.state.decimalFlag) {
-            currentNumber += ".";
-            this.setState({ decimalFlag: true });
-          }}
+allClearButton.addEventListener('click', button => {
+  calculator.clear()
+  calculator.updateDisplay()
+})
 
-      this.setState({ operatorFlag });
-      this.setState({ currentNumber });
-    });this.state = { currentNumber: "0", operatorFlag: false, decimalFlag: false };}
-
-  render() {
-    return (
-      React.createElement("div", null,
-      React.createElement("div", null,
-      React.createElement("h1", { className: "title" }, "JavaScript Calculator"),
-      React.createElement("h2", { className: "title" }, "By Ibn Saad | \u963F\u5229\u592B")),
-
-      React.createElement("div", { id: "grid-container" },
-      React.createElement(Screen, {
-        id: "display",
-        className: "button",
-        currentNumber: this.state.currentNumber }),
-
-      React.createElement(Button, {
-        id: "zero",
-        className: "button",
-        name: "0",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "one",
-        className: "button",
-        name: "1",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "two",
-        className: "button",
-        name: "2",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "three",
-        className: "button",
-        name: "3",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "four",
-        className: "button",
-        name: "4",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "five",
-        className: "button",
-        name: "5",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "six",
-        className: "button",
-        name: "6",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "seven",
-        className: "button",
-        name: "7",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "eight",
-        className: "button",
-        name: "8",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "nine",
-        className: "button",
-        name: "9",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "clear",
-        className: "button black",
-        name: "C",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "equals",
-        className: "button",
-        name: "=",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "decimal",
-        className: "button",
-        name: ".",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "add",
-        name: "+",
-        className: "button",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "subtract",
-        className: "button black",
-        name: "-",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "multiply",
-        className: "button black",
-        name: "*",
-        handleClick: this.handleClick }),
-
-      React.createElement(Button, {
-        id: "divide",
-        className: "button black",
-        name: "/",
-        handleClick: this.handleClick }))));
-
-
-
-
-  }}
-
-
-class Screen extends React.Component {
-  render() {
-    return React.createElement("div", { id: this.props.id }, this.props.currentNumber);
-  }}
-
-
-class Button extends React.Component {constructor(...args) {super(...args);_defineProperty(this, "runParentHandleClick",
-    () => {
-      this.props.handleClick(this.props.name);
-    });}
-  render() {
-    return (
-      React.createElement("button", {
-        id: this.props.id,
-        onClick: this.runParentHandleClick,
-        className: "button" },
-
-      this.props.name));
-
-
-  }}
-
-
-React.render(React.createElement(Application, null), document.getElementById("app"));
+deleteButton.addEventListener('click', button => {
+  calculator.delete()
+  calculator.updateDisplay()
+})

@@ -1,185 +1,78 @@
-@import url("https://fonts.googleapis.com/css?family=Oswald|Prompt|Share+Tech+Mono&display=swap");
-@font-face {
-  font-family: "Digital";
-  src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot");
-  src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot?#iefix")
-      format("embedded-opentype"),
-    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff2")
-      format("woff2"),
-    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff")
-      format("woff"),
-    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.ttf")
-      format("truetype"),
-    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.svg#Digital-7")
-      format("svg");
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+*, *::before, *::after {
+	box-sizing: border-box;
+	font-family: "Montserrat", sans-serif;
+	font-weight: normal;
 }
-html {
-  overflow-y: hidden;
-}
-.title {
-  text-align: center;
-  color: white;
-}
-h1 {
-  font-family: "Oswald", sans-serif;
-  margin-bottom: -20px;
-  font-size: 25px;
-}
-h2 {
-  font-family: "Prompt", sans-serif;
-  margin-bottom: -30px;
-  font-size: 20px;
-}
+
 body {
-  background: #f3767c;
+	padding: 0;
+	margin: 0;
+	background: #f3767c;
 }
 
-#grid-container {
-  margin: 40px auto;
-  width: 327px;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  padding: 20px;
-  border: 1px solid #424242;
-  background: #333;
-  border-radius: 15px;
-  box-shadow: 20px 30px 20px black;
+.calculator-grid {
+	display: grid;
+	justify-content: center;
+	align-content: center;
+	min-height: 100vh;
+	grid-template-columns: repeat(4, 100px);
+	grid-template-rows: minmax(120px, auto) repeat(5, 100px);
 }
-.button {
-  color: white;
-  min-width: 60px;
-  height: 60px;
-  background: #58595b;
-  border: 1px solid #58595b;
-  cursor: pointer;
-  font-size: 30px;
-  transform: translate(12px, 12px) !important;
-  text-align: center;
-  border-radius: 3px;
-  user-select: none;
-}
-.button:hover {
-  border: 1px solid #656363;
-  background: #656363;
-}
-.black {
-  background: black;
-  border: 1px solid black;
-}
-.black:hover {
-  border: 1px solid #3f3f3f;
-  background: #3f3f3f;
-}
-#display {
-  background: #a2af77;
-  font-family: "Digital", sans-serif;
-  min-height: 64px;
-  border: 1px solid #424242;
-  display: flex;
-  border-radius: 15px;
-  margin: 12px 0;
-  padding-right: 5px;
-  width: 300px;
-  transform: translateX(11px);
 
-  justify-content: flex-end;
-  align-items: center;
-  color: black;
-  font-size: 32px;
-  grid-row: 1/2;
-  grid-column: 1/5;
+.calculator-grid > button {
+	cursor: pointer;
+	font-size: 2rem;
+	border: 10px solid #333;
+	outline: none;
+	color: white;
+	background-color: #58595b;
 }
-#divide {
-  grid-row: 2/3;
-  grid-column: 2/3;
-  width: 60px;
+
+.calculator-grid > .black {
+	background-color: black;
 }
-#multiply {
-  grid-row: 2/3;
-  grid-column: 3/4;
-  width: 60px;
+
+.calculator-grid > .black:hover {
+	background-color: #3f3f3f;
 }
-#subtract {
-  grid-row: 2/3;
-  grid-column: 4/5;
-  width: 60px;
+
+.calculator-grid > button:hover {
+	background: #656363;
 }
-#seven {
-  grid-row: 3/4;
-  grid-column: 1/2;
-  width: 60px;
+
+.calculator-grid > .red {
+	background-color: #F15A2B;
 }
-#eight {
-  grid-row: 3/4;
-  grid-column: 2/3;
-  width: 60px;
+
+.calculator-grid > .red:hover {
+	background-color: #f4663a;
 }
-#nine {
-  grid-row: 3/4;
-  grid-column: 3/4;
-  width: 60px;
+.span-two {
+	grid-column: span 2;
 }
-#four {
-  grid-row: 4/5;
-  grid-column: 1/2;
-  width: 60px;
+
+.output {
+	grid-column: 1 / -1;
+	background-color: #a2af77;
+	border: 15px solid #333;
+	color: black;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-around;
+	flex-direction: column;
+	padding: 10px;
+	word-wrap: break-word;
+	word-break: break-all;
 }
-#five {
-  grid-row: 4/5;
-  grid-column: 2/3;
-  width: 60px;
+
+.output .previous-operand {
+	color: rgba(0, 0, 0, 0.5);
+	font-size: 1.25rem;
 }
-#six {
-  grid-row: 4/5;
-  grid-column: 3/4;
-  width: 60px;
-}
-#one {
-  grid-row: 5/6;
-  grid-column: 1/2;
-  width: 60px;
-}
-#two {
-  grid-row: 5/6;
-  grid-column: 2/3;
-  width: 60px;
-}
-#three {
-  grid-row: 5/6;
-  grid-column: 3/4;
-  width: 60px;
-}
-#zero {
-  grid-row: 6/7;
-  grid-column: 1/3;
-  width: 140px;
-}
-#decimal {
-  grid-row: 6/7;
-  grid-column: 3/4;
-  width: 60px;
-}
-#add {
-  grid-row: 3/5;
-  grid-column: 4/5;
-  width: 60px;
-  height: 150px;
-}
-#equals {
-  grid-row: 5/7;
-  grid-column: 4/5;
-  width: 60px;
-  height: 150px;
-  background: #f15a2b;
-  border: 1px solid #f15a2b;
-}
-#equals:hover {
-  background: #f4663a;
-  border: 1px solid #f4663a;
-}
-#clear {
-  grid-row: 2/3;
-  grid-column: 1/2;
-  width: 60px;
+
+.output .current-operand {
+	color: rgba(0, 0, 0, 0.75);
+	font-size: 2.25rem;
 }
